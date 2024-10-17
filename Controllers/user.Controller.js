@@ -36,7 +36,7 @@ export const userSignInController = async (req, res)=>{
         }
         const userToken = await createTokenForUser(user);
         console.log("This is user token received from user ", userToken);
-        return res.status(201).cookie("auth_token", userToken, {maxAge:3600000}).send(user).json({message:"SignUp Successfully"});
+        return res.status(201).cookie("auth_token", userToken, {maxAge:3600000}).json({message:"SignUp Successfully", user});
     } catch (error) {
         console.log("Sorry we can not signIn your account due to this error plz fix the bug first ", error);
         return res.status(500).json({message:"Sorry we can not signIn your account due to this error plz fix the bug first ", error});
