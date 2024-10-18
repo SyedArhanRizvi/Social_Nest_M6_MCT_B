@@ -5,13 +5,15 @@ import cloudinaryPhotoLink from "../Utils/cloudinary.photo.js";
 // When user will upload a new post so this code will run ::
 export const addNewPostController = async (req, res)=>{
     const {description, gif, emoji} = req.body;
+    const user = req.user;
+
     const photoLink = req.file ? req.file.path : null;
     if(!photoLink) {
         console.log("File Does't exist", photoLink);
     }
     try {
         const file = await cloudinaryPhotoLink(photoLink);
-        const uploadedPost = await PostModel.create({description, gif, emoji, file: file?.url});
+        const uploadedPost = await PostModel.create({description, gif, emoji, file: file?.url, postedBy: user});
         console.log(description, file);
         
         return res.status(201).json({message: "User Post has successfully uploaded ", uploadedPost});
@@ -84,5 +86,21 @@ export const userFileHandlerController = async (req, res)=>{
     } catch (error) {
         console.log("There is some issus so we can't handler your file ", error);
         return res.status(500).json({message:"There is some issus so we can't handler your file ", error});
+    }
+}
+
+// Add Like or Comment on your post ::
+export const addLikeOrCommentController = async (req, res)=>{
+    const {likeCount, commentsCount, comments} = req.body;
+    const {id} = req.params;
+    console.log(id,likeCount);
+    
+    try {
+        const addLikeOrComment = await PostModel.findByIdAndUpdate(id, {likeCount, commentsCount, comments});
+        console.log("Like added Successfully ", addLikeOrComment);
+        return res.status(201).json({message:"Like or comment has added successfully"});
+    } catch (error) {
+        console.log("Sorry due to some errors we cant add like or comment on your post plz fix the bug first ", error);
+        return res.status(500).json({message:"Sorry due to some errors we cant add like or comment on your post plz fix the bug first ", error});
     }
 }

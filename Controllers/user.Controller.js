@@ -52,6 +52,16 @@ export const userAuthenticationController = async (req, res)=>{
         return res.status(501).json({message:"There is some issus in user controller line number 54-55 plz fix the bug first ", error});
     }
 }
+export const userDetailsController = async (req, res)=>{
+    const {id} = req.params;
+    try {
+        const user = await UserModel.findById(id)
+        return res.status(201).json({user}); 
+     } catch (error) {
+         console.log("There is some issus in user controller line number 54-55 plz fix the bug first ", error);
+         return res.status(501).json({message:"There is some issus in user controller line number 54-55 plz fix the bug first ", error});
+     }
+}
 
 // When user logged  out there account so this code will run ::
 export const userLoggedOutController = async (req, res)=>{

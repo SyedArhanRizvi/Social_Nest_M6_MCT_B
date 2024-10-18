@@ -17,6 +17,10 @@ const CommentSchema = new mongoose.Schema({
 
 const UserPostSchema = new mongoose.Schema(
   {
+    postedBy : {
+      type : Object,
+      required : true
+    },
     description: {
       type: String,
       required: true,

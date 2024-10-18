@@ -20,7 +20,12 @@ const userSchema = new mongoose.Schema({
         required:true
     }, photo: {
         type: String
-    }
+    }, posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post"
+        }
+    ]
 }, {timestamps:true});
 
 export const UserModel = mongoose.model("User", userSchema);
